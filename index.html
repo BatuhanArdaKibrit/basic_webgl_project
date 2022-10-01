@@ -1,0 +1,216 @@
+<html>
+<head>
+   <style>
+      div{
+         text-align: center;
+         margin-bottom: 15px;
+      }
+      option{
+         text-align: center;
+      }
+      .hide{
+         display: none;
+      }
+      .transitionClass{
+         transition: 400ms;
+      }
+      select:focus{
+         outline: none;
+      }
+      #redbtnup,#redbtndwn{
+         border: 2px solid red; 
+         background-color: white; 
+         color: red;
+      }
+      #redbtnup:hover{
+         color: white;
+         background-color: red;
+      }
+      #redbtndwn:hover{
+         color: white;
+         background-color: red;
+      }
+      #bluebtnup,#bluebtndwn{
+         border: 2px solid blue; 
+         background-color: white; 
+         color: blue;
+      }
+      #bluebtnup:hover{
+         color: white;
+         background-color: blue;
+      }
+      #bluebtndwn:hover{
+         color: white;
+         background-color: blue;
+      }
+      #greenbtndwn,#greenbtnup{
+         border: 2px solid green; 
+         background-color: white; 
+         color: green;
+      }
+      #greenbtnup:hover{
+         color: white;
+         background-color: green;
+      }
+      #greenbtndwn:hover{
+         color: white;
+         background-color: green;
+      }
+      div#keyboardevents{
+         position: absolute;
+         top: 5%;
+         left: 5%;
+      }
+      #firstbtns button{
+         background-color: aliceblue;
+         width: 150px;
+         height: 30px;
+         border: 1px solid black;
+         transition: 400ms;
+      }
+      @media screen and (max-width:900px) {
+         #keyboardevents{
+            display: none;
+         }
+         .collapse-icon{
+            display: block;
+         }
+      }
+      #modal-bg{
+         position: fixed;
+         width: 100%;
+         height: 100%;
+         background: rgba(0,0,0,0.8);
+         top: 0;
+         left: 0;
+      }
+      #modal{
+         z-index: 1;
+         width: 60%;
+         padding: 15px 20px;
+         position: relative;
+         margin: 10% auto;
+         border-radius: 5px;
+         background-color: lightcyan;
+         overflow:auto;
+      }
+      .mr-15{
+         margin-right: 15px;
+      }
+      #scalebtns button{
+         width: 100px;
+         height: 30px;
+         background-color: aliceblue;
+         border: 1px solid black;
+         transition: 400ms;
+      }
+      #scalebtns button:hover{
+         background-color: black;
+         border: 1px solid aliceblue;
+         color: aliceblue;
+      }
+      #firstbtns button:hover{
+         background-color: black;
+         border: 1px solid aliceblue;
+         color: aliceblue;
+      }
+
+   </style>
+</head>
+<body style="background-color: lightcyan;">
+   <div style="width: max-content; position: relative; left:50%; transform: translate(-50%,0);">
+   <canvas id="glcanvas" width="512" height="512"></canvas>
+   <span style="position: absolute; left: 50%; top: 95%; transform: translate(-50%,0); color: white;" id="delaytext"></span>
+   <div class="collapse-icon hide" style="position: absolute; left: 95%; top: 5%; font-size: 1.5em; cursor: pointer;">&quest;</div>
+   </div>
+   <div id="keyboardevents">
+      <div>Random Color : r</div>
+      <div>+Y : w</div>
+      <div>-Y : s</div>
+      <div>+X : d</div>
+      <div>-X : a</div>
+      <div>Start/Stop : p</div>
+      <div>Start Location : q</div>
+      <div>Faster : f</div>
+      <div>Slower : g</div>
+      <div>Bigger : b</div>
+      <div>Smaller : m</div>
+      <div>Normal Size : n</div>
+      <div>Change Direction : z</div>
+   </div>
+   <div id="firstbtns">
+      <button id="DirectionButton">Change Direction</button>
+      <button id="stopbutton">Start/Stop</button>
+   </div>
+   <select name="" id="optionmenu" style="position: relative; left: 50%; transform: translate(-50%,0); display: block; margin-bottom: 10px;" size="3">
+      <option value="0">Change Direction</option>
+      <option value="1">Spin faster</option>
+      <option value="2">Spin slower</option>
+   </select>
+   <div>
+   <button id="redbtnup" class="transitionClass">Red +</button>
+   <button id="redbtndwn" class="transitionClass">Red -</button>
+   <button id="greenbtnup" class="transitionClass">Green +</button>
+   <button id="greenbtndwn" class="transitionClass">Green -</button>
+   <button id="bluebtnup" class="transitionClass">Blue +</button>
+   <button id="bluebtndwn" class="transitionClass">Blue -</button>
+   </div>
+   <div id="showcases">
+      <span id="redshowcase" class="mr-15" style="color: red;"></span>
+      <span id="greenshowcase"class="mr-15" style="color: green;"></span>
+      <span id="blueshowcase"class="mr-15" style="color: blue;"></span>
+   </div>
+   <div id="scalebtns">
+      <button id="scalein" class="mr-15">Scale +</button>
+      <button id="scalede" class="mr-15">Scale -</button>
+      <button id="nrmlsize">Normal Size</button>
+   </div>
+   <div>
+      x : -1 <input id="slidex" type="range"	min="-1" max="1" step="0.05" value="0"> 1 &nbsp; y : -1 <input id="slidey" type="range"	min="-1" max="1" step="0.05" value="0"> 1
+   </div>
+   <div id="modal-bg" class="hide">
+      <div id="modal">
+         <span id="xicon" style="position: absolute; top: 0; right: 5px; cursor: pointer; font-size: 1.5em;">&times;</span>
+         <div>Random Color : r</div>
+         <div>+Y : w</div>
+         <div>-Y : s</div>
+         <div>+X : d</div>
+         <div>-X : a</div>
+         <div>Start/Stop : p</div>
+         <div>Start Location : q</div>
+         <div>Faster : f</div>
+         <div>Slower : g</div>
+         <div>Bigger : b</div>
+         <div>Smaller : m</div>
+         <div>Normal Size : n</div>
+         <div>Change Direction : z</div>
+      </div>
+   </div>
+</body>
+<script id="vertex-shader" type="x-shader/x-vertex">
+   attribute vec4 vPosition;
+   uniform float theta;
+   uniform float scale;
+   uniform float slidexval;
+   uniform float slideyval;
+   
+   void main() {
+      gl_Position.x = ((cos(theta) * vPosition.x - sin(theta) * vPosition.y)* scale)+slidexval;
+      gl_Position.y = ((sin(theta) * vPosition.x + cos(theta) * vPosition.y)* scale)+slideyval;
+      gl_Position.z = 0.0;
+      gl_Position.w = 1.0;
+   }
+   
+</script>
+<script id="fragment-shader" type="x-shader/x-fragment"> 
+   precision mediump float;
+   uniform vec4 colorarray;
+   void main() {
+      gl_FragColor = vec4( colorarray );
+   }
+</script>
+<script src="./common/MV.js"></script>
+<script src="./common/initShaders.js"></script>
+<script src="./common/webgl-utils.js"></script>
+<script src="script.js"></script>
+</html>
